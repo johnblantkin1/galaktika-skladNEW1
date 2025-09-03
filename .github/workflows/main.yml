@@ -27,13 +27,34 @@ jobs:
       - name: Navigate to project directory
         run: |
           cd galaktika_sklad_ready
-          pwd
+          echo "Current directory: $(pwd)"
           ls -la
+
+      - name: Verify directory contents
+        run: |
+          echo "Checking directory contents..."
+          ls -la
+          echo "Searching for pubspec.yaml..."
+          find . -name "pubspec.yaml"
+
+      - name: Check pubspec.yaml existence
+        run: |
+          if [[ ! -f "pubspec.yaml" ]]; then
+            echo "pubspec.yaml not found in current directory!"
+            exit 1
+          fi
 
       - name: Verify Flutter installation
         run: flutter doctor
 
-      - name: Check pubspec.yaml existence
-        run: |
-          if [ ! -f "pubspec.yaml" ]; then
-            echo "pubspec.yaml not found!
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
