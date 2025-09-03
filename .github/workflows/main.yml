@@ -34,3 +34,11 @@ jobs:
         run: |
           echo "Searching for pubspec.yaml..."
           if ! -f "pubspec.yaml"; then
+
+- name: Check APK existence
+  run: |
+    if [ -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
+      echo "APK exists"
+    else
+      echo "APK not found"
+    fi
