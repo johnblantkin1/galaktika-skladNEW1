@@ -27,13 +27,4 @@ jobs:
       - name: Navigate to project directory
         run: |
           cd galaktika_sklad_ready
-          echo "Current directory: $(pwd)"
-          ls -la
-
-      - name: Check pubspec.yaml existence
-        run: |
-          echo "Searching for pubspec.yaml..."
-          find . -name "pubspec.yaml"  # Добавлен пробел после find
-          
-          if ! [ -f "pubspec.yaml" ]; then
-            echo "pubspec.yaml not found in current directory!
+          echo
