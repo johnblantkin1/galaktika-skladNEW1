@@ -24,18 +24,13 @@ jobs:
       with:
         flutter-version: '3.22.0'
 
-    - name: Verify current directory
+    - name: Navigate to project directory
       run: |
+        cd galaktika_sklad_ready
         echo "Current directory: $(pwd)"
         ls -la
 
-    - name: Navigate to project directory
-      run: |
-        cd galaktika_sklad_ready || exit 1
-        echo "Changed to project directory: $(pwd)"
-        ls -la
-
-    - name: Search for pubspec.yaml
+    - name: Check pubspec.yaml existence
       run: |
         echo "Searching for pubspec.yaml..."
         find . -name "pubspec.yaml"
