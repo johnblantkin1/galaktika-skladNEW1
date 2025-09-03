@@ -34,11 +34,29 @@ jobs:
         run: |
           echo "Searching for pubspec.yaml..."
           if ! -f "pubspec.yaml"; then
+            echo "pubspec.yaml not found in current directory!"
+            exit 1
+          fi
 
-- name: Check APK existence
-  run: |
-    if [ -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
-      echo "APK exists"
-    else
-      echo "APK not found"
-    fi
+      - name: Verify Flutter installation
+        run: flutter doctor
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Verify APK existence
+        run: |
+          if ! -f "build/app/outputs/flutter-apk/app-release.apk"; then
+            echo "APK file not found!"
+            exit 1
+          fi
+          echo "APK file exists and is ready for upload"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
