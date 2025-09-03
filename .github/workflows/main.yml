@@ -36,7 +36,7 @@ jobs:
       - name: Check pubspec.yaml existence
         run: |
           echo "Searching for pubspec.yaml..."
-          if ! [[ -f "pubspec.yaml" ]]; then
+          if ! [[ -f "./pubspec.yaml" ]]; then
             echo "pubspec.yaml not found in current directory!"
             exit 1
           fi
@@ -63,10 +63,7 @@ jobs:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
-      - name: Download APK instructions
+      - name: Download instructions
         run: |
-          echo "::notice::APK is available for download:"
-          echo "1. Go to Actions tab in your repository"
-          echo "2. Find the completed workflow run"
-          echo "3. Go to Artifacts section"
-          echo "4.
+          echo "::notice::APK is ready for download!"
+          echo "Go to Actions tab → Find workflow → Download 'release-apk'"
