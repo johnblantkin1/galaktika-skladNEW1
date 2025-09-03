@@ -25,4 +25,48 @@ jobs:
           flutter-version: '3.22.0'
 
       - name: Navigate to project directory
-        run:
+        run: |
+          cd galaktika_sklad_ready
+          echo "Current directory: $(pwd)"
+          ls -la
+
+      - name: Verify Flutter installation
+        run: flutter doctor
+
+      - name: Check pubspec.yaml existence
+        run: |
+          echo "Searching for pubspec.yaml..."
+          if ! [[ -f "pubspec.yaml" ]]; then
+            echo "pubspec.yaml not found in current directory!"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+
+      - name: Build APK
+        run: |
+          flutter build apk --release
+
+      - name: Verify APK existence
+        run: |
+          if ! [[ -f "build/app/outputs/flutter-apk/app-release.apk" ]]; then
+            echo "APK file not found!"
+            exit 1
+          fi
+          echo "APK file exists and is ready for upload"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Download APK instructions
+        run: |
+          echo "::notice::APK is available for download:"
+          echo "1. Go to Actions tab in your repository"
+          echo "2. Find the completed workflow run"
+          echo "3. Go to Artifacts section"
+          echo "4.
