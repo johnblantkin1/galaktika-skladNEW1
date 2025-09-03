@@ -30,4 +30,7 @@ jobs:
           echo "Current directory: $(pwd)"
           ls -la
 
-      - name:
+      - name: Check pubspec.yaml existence
+        run: |
+          echo "Searching for pubspec.yaml..."
+          if ! -f "pubspec.yaml"; then
