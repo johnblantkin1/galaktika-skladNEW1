@@ -33,26 +33,28 @@ jobs:
       - name: Verify Flutter installation
         run: flutter doctor
 
-      - name: Check pubspec.yaml existence
+      - name: Check project structure
         run: |
-          echo "Searching for pubspec.yaml..."
-          if ! [[ -f "./pubspec.yaml" ]]; then
-            echo "pubspec.yaml not found in current directory!"
+          if [ ! -f "./pubspec.yaml" ]; then
+            echo "Error: pubspec.yaml not found in project directory!"
             exit 1
           fi
+          echo "Project structure verified"
 
       - name: Install dependencies
         run: |
           flutter pub get
+          flutter pub upgrade
 
       - name: Build APK
         run: |
           flutter build apk --release
+          echo "Build completed"
 
       - name: Verify APK existence
         run: |
-          if ! [[ -f "build/app/outputs/flutter-apk/app-release.apk" ]]; then
-            echo "APK file not found!"
+          if [ ! -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
+            echo "Error: APK file not found!"
             exit 1
           fi
           echo "APK file exists and is ready for upload"
@@ -65,5 +67,9 @@ jobs:
 
       - name: Download instructions
         run: |
-          echo "::notice::APK is ready for download!"
-          echo "Go to Actions tab → Find workflow → Download 'release-apk'"
+          echo "::notice::APK successfully built!"
+          echo "Download instructions:"
+          echo "1. Go to Actions tab"
+          echo "2. Find the completed workflow run"
+          echo "3. Click on 'release-apk' artifact to download"
+
