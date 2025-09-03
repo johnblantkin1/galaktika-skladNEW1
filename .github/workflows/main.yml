@@ -2,53 +2,58 @@ name: Flutter CI
 
 on:
   push:
-    branches: [main]
+    branches: main
   pull_request:
-    branches: [main]
+    branches: main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          submodules: true
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: true
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.0'
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.22.0'
 
-      - name: Verify Flutter installation
-        run: flutter doctor
+    - name: Verify Flutter installation
+      run: flutter doctor
 
-      - name: Check current directory
-        run: |
-          echo "Current directory: $(pwd)"
-          ls -la
+    - name: Check directory structure
+      run: |
+        echo "Current directory: $(pwd)"
+        ls -la
+        echo "Searching for pubspec.yaml..."
+        find . -name "pubspec.yaml"
 
-      - name: Navigate to project root
-        run: |
-          # Проверяем наличие pubspec.yaml
-          if [ ! -f "pubspec.yaml" ]; then
-            echo "pubspec.yaml not found in current directory"
-            exit 1
-          fi
-          
-          # Если проект находится в поддиректории
-          # cd your-project-directory
+    - name: Navigate to correct directory
+      run: |
+        # Если проект находится в поддиректории, укажите её здесь
+        # Например:
+        # cd your-project-folder
+        
+        # Проверяем наличие pubspec.yaml
+        if [ ! -f "pubspec.yaml" ]; then
+          echo "pubspec.yaml not found!"
+          exit 1
+        fi
 
-      - name: Install dependencies
-        run: flutter pub get
+    - name: Install dependencies
+      run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release
+    - name: Build APK
+      run: flutter build apk --release
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
+
+
