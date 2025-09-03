@@ -26,6 +26,8 @@ jobs:
 
       - name: Navigate to project directory
         run: |
-          cd
+          cd galaktika_sklad_ready
+          echo "Current directory: $(pwd)"
+          ls -la
 
-    
+      - name:
